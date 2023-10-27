@@ -1,5 +1,7 @@
 <?php
 require 'lib/db.php';
+require 'vendor/autoload.php';
+use Dompdf\Dompdf;
 
 $userId = $_GET['user_id'];
 $roomId = $_GET['room_id'];
@@ -10,8 +12,18 @@ $checkOut = $_GET['check_out'];
 $bookingId = $_GET['booking_id'];
 $conn = $GLOBALS['conn'];
 
+function savePdf($html)
+{
+    $dompdf = new Dompdf();
+    $dompdf->loadHtml($html);
+    $dompdf->setPaper('A4', 'portrait');
+    $dompdf->render();
+    $dompdf->stream('invoice ' . $_GET['booking_id'] . '.pdf', array("Attachment" => false));
+}
 
+ob_start();
 ?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -19,9 +31,6 @@ $conn = $GLOBALS['conn'];
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Invoice</title>
-    <link rel="stylesheet" href="invoice.css">
-    <link href="//netdna.bootstrapcdn.com/bootstrap/3.1.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
-    <!-- <?php require('inc/links.php'); ?> -->
 </head>
 
 <body>
@@ -138,45 +147,11 @@ $conn = $GLOBALS['conn'];
                 </div>
             </div>
         </div>
-        <div class="mt-4">
-            <button id="printChrome" class="btn btn-primary">Print</button>
-            <!-- save pdf using savePdf function -->
-            <a href="invoiceSavePdf.php?booking_id=<?php echo $bookingId; ?>&user_id=<?php echo $userId; ?>&room_id=<?php echo $roomId; ?>&check_in=<?php echo $checkIn; ?>&check_out=<?php echo $checkOut; ?>&bundling_id=<?php echo $bundlingId; ?>&number_of_people=<?php echo $number_of_people; ?>"
-                id="savePdf" class="btn btn-primary">Download</a>
-
-        </div>
     </div>
-    <script src="https://code.jquery.com/jquery-3.7.1.min.js"
-        integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.8.0/html2pdf.js"
-        integrity="sha512-liPvfWpzKp7bXBAK05m+Uqrv5ATN4kCeUh64IygMoo98oEcTELOrymzU8omW2mEZszHHJ+qPOSkEzJLs2QqwQg=="
-        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-    <script>
-        document.getElementById('printChrome').addEventListener('click', function () {
-            this.style.display = 'none';
-            document.getElementById('savePdf').style.display = 'none';
-            window.print();
-            this.style.display = 'block';
-            document.getElementById('savePdf').style.display = 'block';
-
-        });
-        document.getElementById('savePdf').addEventListener('click', function () {
-            console.log('save pdf');
-            var element = document.getElementById('invoice');
-            var opt = {
-                margin: 1,
-                filename: 'Invoice_<?php echo $bookingId; ?>.pdf',
-                image: { type: 'jpeg', quality: 0.98 },
-                html2canvas: { scale: 2 },
-                jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
-            };
-
-            // Create the PDF
-            html2pdf().from(element).set(opt).save();
-        });
-
-
-    </script>
 </body>
 
 </html>
+<?php
+$html = ob_get_clean();
+savePdf($html);
+?>

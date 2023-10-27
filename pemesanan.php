@@ -289,12 +289,10 @@
 
             <?php require('./admin/inc/scripts.php'); ?>
             <script>
-
-
-
+ 
                 $('#uploadBuktiPembayaran').on('show.bs.modal', function (event) {
-                    var button = $(event.relatedTarget) // Button that triggered the modal
-                    var id = button.data('bs-id') // Extract info from data-bs-* attributes
+                    var button = $(event.relatedTarget)  
+                    var id = button.data('bs-id')  
                     var modal = $(this)
                     modal.find('.modal-body #booking_id').val(id)
                 })
