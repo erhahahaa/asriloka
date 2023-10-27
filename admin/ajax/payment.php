@@ -14,6 +14,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_REQUEST['action']) && $_REQ
     $check_out = $data['check_out'];
     $hari = (strtotime($check_out) - strtotime($check_in)) / 86400;
 
+
     $conn = $GLOBALS['conn'];
     $sql = "SELECT * FROM user WHERE id = $user";
     $res = mysqli_query($conn, $sql);
@@ -48,7 +49,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_REQUEST['action']) && $_REQ
             ]);
             die();
         }
-        if ($check_in < date('d-m-Y')) {
+        if ($check_in < date('Y-m-d')) {
             echo json_encode([
                 'status' => 'failed',
                 'message' => 'Tanggal check-in tidak boleh lebih kecil dari tanggal hari ini'

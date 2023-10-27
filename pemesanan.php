@@ -117,10 +117,10 @@
                                         $html .= "<td><div class='text-center'><div>";
                                         $html .= "Menunggu Sisa Pembayaran :";
                                         $html .= "<span class='text-danger'> ";
-                                        $html .= "<td>Rp. " . number_format($value['totalPrice'] - $value['userPayed'], 0, ',', '.') . "</td>";
+                                        $html .= "Rp. " . number_format($value['totalPrice'] - $value['userPayed'], 0, ',', '.') . "</span>";
 
                                         // $html .= $value['totalPrice'] - $value['userPayed'];
-                                        $html .= "</span>";
+                                        // $html .= "</span>";
                                         $html .= "</div></div></td>";
                                     } else if ($value['status'] == 'CANCELLED') {
                                         $html .= "<td><div class='text-center'><div>";
@@ -146,7 +146,7 @@
                                     $html .= "<div class='d-flex justify-content-center'>";
                                     $html .= "<button type='button' class='btn btn-primary' data-bs-toggle='modal' data-bs-target='#viewBooking$value[id]'>View</button>";
                                     if ($value['status'] == 'BOOKED' && $value['paymentMethod'] == 'DP') {
-                                        $html .= "<button type='button' class='btn btn-primary' data-bs-toggle='modal' data-bs-target='#uploadBuktiPembayaran' data-bs-id='$value[id]'>Upload Bukti Pembayaran</button>";
+                                        $html .= "<button type='button' class='btn btn-primary mx-2' data-bs-toggle='modal' data-bs-target='#uploadBuktiPembayaran' data-bs-id='$value[id]'>Upload Bukti Pembayaran</button>";
                                     }
                                     $html .= "</div>";
 
@@ -289,10 +289,10 @@
 
             <?php require('./admin/inc/scripts.php'); ?>
             <script>
- 
+
                 $('#uploadBuktiPembayaran').on('show.bs.modal', function (event) {
-                    var button = $(event.relatedTarget)  
-                    var id = button.data('bs-id')  
+                    var button = $(event.relatedTarget)
+                    var id = button.data('bs-id')
                     var modal = $(this)
                     modal.find('.modal-body #booking_id').val(id)
                 })

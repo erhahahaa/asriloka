@@ -382,6 +382,7 @@
                     data: $(this).serialize(),
                     caches: false,
                     success: function (response) {
+                        console.log("Response : ", response);
                         var data = JSON.parse(response);
                         console.log('Details : ', data);
                         var type_bundling = "room";
@@ -395,7 +396,7 @@
 
                             html += `<form action="admin/ajax/payment.php?action=konfirmasi" method="POST" id="konfirmasi_pembayaran">`;
                             html += `<h5>Nama : ${data.user.name}</h5>`;
-                            html += `<h5>Email : ${data.user.email}</h5>`;
+                            // html += `<h5>Email : ${data.user.email}</h5>`;
                             html += `<h5>Phone : ${data.user.phone}</h5>`;
 
                             if (data.room.type != "" && data.room.type != undefined) {
@@ -428,8 +429,12 @@
                                 data.payment.toUpperCase();
                             if (data.sisa != 0) {
                                 html += ` (DP)</span></h5>`;
-                                html += `<h5>Nominal DP : <span class="text-primary">Rp ${data.dp.toLocaleString('id-ID')}</span></h5>`;
-                                html += `<h5>Sisa Pembayaran : <span class="text-danger">Rp ${(data.sisa).toLocaleString('id-ID')} (+PPN 1% Bayar Waktu Check-in)</span></h5>`;
+                                const formattedDp = new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR' }).format(data.dp);
+                                const formattedSisa = new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR' }).format(data.sisa);
+
+                                html += `<h5>Nominal DP : <span class="text-primary">${formattedDp}</span></h5>`;
+                                html += `<h5>Sisa Pembayaran : <span class="text-danger">${formattedSisa} (+PPN 1% Bayar Waktu Check-in)</span></h5>`;
+
                             } else {
                                 html += "</span></h5>";
                                 html += `<h5>Total Pembayaran :<span class="text-danger"> Rp ${data.total_price.toLocaleString('id-ID')} (+PPN 1%) </span> </h5>`;
