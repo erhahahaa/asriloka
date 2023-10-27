@@ -45,6 +45,18 @@
                                 $booking[] = $row;
                             }
                             if (count($booking) != 0) {
+                                $html = "<table class='table table-striped'>";
+                                $html .= "<thead>";
+                                $html .= "<tr>";
+                                $html .= "<th style='width: 10px;'>ID</th>";
+                                $html .= "<th scope='col'>Room</th>";
+                                $html .= "<th scope='col'>Status</th>";
+                                $html .= "<th scope='col'>Invoice</th>";
+                                $html .= "<th scope='col'>Action</th>";
+                                $html .= "</tr>";
+
+                                $html .= "</thead>";
+                                $html .= "<tbody>";
                                 foreach ($booking as $key => $value) {
                                     if ($value['roomId'] == null) {
                                         // fetch bundling
@@ -68,22 +80,6 @@
 
                                     }
                                 }
-                                $html = "<table class='table table-striped'>";
-                                $html .= "<thead>";
-                                $html .= "<tr>";
-                                $html .= "<th style='width: 10px;'>ID</th>";
-                                $html .= "<th scope='col'>Room</th>";
-                                // $html .= "<th scope='col'>Check In</th>";
-                                // $html .= "<th scope='col'>Check Out</th>";
-                                // $html .= "<th scope='col'>Total Price</th>";
-                                $html .= "<th scope='col'>Status</th>";
-                                // $html .= "<th scope='col'>Pembayaran</th>";
-                                $html .= "<th scope='col'>Invoice</th>";
-                                $html .= "<th scope='col'>Action</th>";
-                                $html .= "</tr>";
-
-                                $html .= "</thead>";
-                                $html .= "<tbody>";
                                 foreach ($booking as $key => $value) {
                                     $html .= "<tr>";
                                     $html .= " <th scope='row'>$value[id]</th>";
@@ -99,28 +95,13 @@
 
                                         }
                                     }
-
-                                    // $html .= "<td>" . date('d-m-Y', strtotime($value['checkIn'])) . "</td>";
-                                    // $html .= "<td>" . date('d-m-Y', strtotime($value['checkOut'])) . "</td>";
-                                    // $html .= "<td>$value[totalPrice]</td>";
                                     $html .= "<td>$value[status]</td>";
-                                    // $html .= "<td>";
-                                    // if ($value['paymentMethod'] == 'DP') {
-                                    //     $html .= "<div class='text-center'>";
-                                    //     $html .= "DP : $value[userPayed] <br>";
-                                    //     $html .= "</div>";
-                                    // } else {
-                                    //     $html .= "<span>Lunas</span>";
-                                    // }
                                     if ($value['status'] == 'BOOKED' && $value['paymentMethod'] == 'DP') {
                                         $_SESSION['sukses'] = "Segera lakukan pembayaran untuk mengkonfirmasi pemesanan anda";
                                         $html .= "<td><div class='text-center'><div>";
                                         $html .= "Menunggu Sisa Pembayaran :";
                                         $html .= "<span class='text-danger'> ";
                                         $html .= "Rp. " . number_format($value['totalPrice'] - $value['userPayed'], 0, ',', '.') . "</span>";
-
-                                        // $html .= $value['totalPrice'] - $value['userPayed'];
-                                        // $html .= "</span>";
                                         $html .= "</div></div></td>";
                                     } else if ($value['status'] == 'CANCELLED') {
                                         $html .= "<td><div class='text-center'><div>";
@@ -137,103 +118,78 @@
                                     } else {
                                         $html .= "<td><a href='invoice.php?booking_id=$value[id]&user_id=$user[id]&room_id=$value[roomId]&check_in=$value[checkIn]&check_out=$value[checkOut]&bundling_id=$value[bundlingId]&number_of_people=$value[capacity]' class='btn btn-primary'>Invoice</a></td>";
                                     }
-                                    // if ($value['status'] == 'BOOKED' && $value['paymentMethod'] == 'DP') {
-                                    // $html .= "<td><button type='button' class='btn btn-primary' data-bs-toggle='modal' data-bs-target='#uploadBuktiPembayaran' data-bs-id='$value[id]'>Upload Bukti Pembayaran</button></td>";
-                        
-
-                                    // actions : View, Upload Bukti Pembayaran, Cancel
                                     $html .= "<td>";
                                     $html .= "<div class='d-flex justify-content-center'>";
-                                    $html .= "<button type='button' class='btn btn-primary' data-bs-toggle='modal' data-bs-target='#viewBooking$value[id]'>View</button>";
+                                    $html .= "<button type='button' class='btn btn-primary viewBookingBtn' data-booking-id='$value[id]'>View</button>";
+
                                     if ($value['status'] == 'BOOKED' && $value['paymentMethod'] == 'DP') {
                                         $html .= "<button type='button' class='btn btn-primary mx-2' data-bs-toggle='modal' data-bs-target='#uploadBuktiPembayaran' data-bs-id='$value[id]'>Upload Bukti Pembayaran</button>";
                                     }
                                     $html .= "</div>";
 
                                     $html .= "</td>";
-
-                                    // }
                                     $html .= "</tr>";
                                 }
                                 $html .= "</tbody>";
                                 $html .= "</table>";
-                                //             $html .= ' <div class="modal fade" id="viewBooking" tabindex="-1" aria-labelledby="viewBookingLabel"
-                                //     aria-hidden="true">
-                                //     <div class="modal-dialog modal-dialog-centered">
-                                //         <div class="modal-content">
-                                //             <div class="modal-header">
-                                //                 <h5 class="modal-title" id="viewBookingLabel">Pemesanan</h5>
-                                //                 <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                //                     aria-label="Close"></button>
-                                //             </div>
-                                //             <div class="modal-body" id="viewPembayaran"> 
+                                // $html .= "<div class='modal fade' id='viewBooking$value[id]' tabindex='-1' aria-labelledby='viewBookingLabel$value[id]' aria-hidden='true'>";
+                                // $html .= "<div class='modal-dialog modal-dialog-centered'>";
+                                // $html .= "<div class='modal-content'>";
+                                // $html .= "<div class='modal-header'>";
+                                // $html .= "<h5 class='modal-title' id='viewBookingLabel$value[id]'>Pemesanan $value[id]</h5>";
+                                // $html .= "<button type='button' class='btn-close' data-bs-dismiss='modal' aria-label='Close'></button>";
+                                // $html .= "</div>";
+                                // $html .= "<div class='modal-body' id='viewPembayaran$value[id]'>";
+                                // $html .= "<table class='table table-striped'>";
+                                // $html .= "<thead>";
+                                // $html .= "<tr>";
+                                // $html .= "<th scope='col'>Room</th>";
+                                // $html .= "<th scope='col'>Check In</th>";
+                                // $html .= "<th scope='col'>Check Out</th>";
+                                // $html .= "<th scope='col'>Total Price</th>";
+                                // $html .= "<th scope='col'>Status</th>";
+                                // $html .= "<th scope='col'>Pembayaran</th>";
+                                // $html .= "</tr>";
+                                // $html .= "</thead>";
+                                // $html .= "<tbody>";
+                                // $html .= "<tr>";
+                                // $html .= "<td>";
+                                // foreach ($room as $k => $v) {
+                                //     if ($v['id'] == $value['roomId']) {
+                                //         $html .= "$v[name]";
+                                //         break;
+                                //     }
+                                //     if ($v['id'] == $value['bundlingId']) {
+                                //         $html .= "$v[name]";
+                                //         break;
                         
-                                //             </div>
-                                //         </div>
-                                //     </div>
-                                // </div>';
-                                $html .= "<div class='modal fade' id='viewBooking$value[id]' tabindex='-1' aria-labelledby='viewBookingLabel$value[id]' aria-hidden='true'>";
-                                $html .= "<div class='modal-dialog modal-dialog-centered'>";
-                                $html .= "<div class='modal-content'>";
-                                $html .= "<div class='modal-header'>";
-                                $html .= "<h5 class='modal-title' id='viewBookingLabel$value[id]'>Pemesanan $value[id]</h5>";
-                                $html .= "<button type='button' class='btn-close' data-bs-dismiss='modal' aria-label='Close'></button>";
-                                $html .= "</div>";
-                                $html .= "<div class='modal-body' id='viewPembayaran$value[id]'>";
-                                $html .= "<table class='table table-striped'>";
-                                $html .= "<thead>";
-                                $html .= "<tr>";
-                                $html .= "<th scope='col'>Room</th>";
-                                $html .= "<th scope='col'>Check In</th>";
-                                $html .= "<th scope='col'>Check Out</th>";
-                                $html .= "<th scope='col'>Total Price</th>";
-                                $html .= "<th scope='col'>Status</th>";
-                                $html .= "<th scope='col'>Pembayaran</th>";
-                                $html .= "</tr>";
-                                $html .= "</thead>";
-                                $html .= "<tbody>";
-                                $html .= "<tr>";
-                                $html .= "<td>";
-                                foreach ($room as $k => $v) {
-                                    if ($v['id'] == $value['roomId']) {
-                                        $html .= "$v[name]";
-                                        break;
-                                    }
-                                    if ($v['id'] == $value['bundlingId']) {
-                                        $html .= "$v[name]";
-                                        break;
-
-                                    }
-                                }
-                                $html .= "</td>";
-                                $html .= "<td>" . date('d-m-Y', strtotime($value['checkIn'])) . "</td>";
-                                $html .= "<td>" . date('d-m-Y', strtotime($value['checkOut'])) . "</td>";
-                                // $html .= "<td>$value[totalPrice]</td>";
-                                $html .= "<td>Rp. " . number_format($value['totalPrice'], 0, ',', '.') . "</td>";
-
-                                $html .= "<td>$value[status]</td>";
-                                $html .= "<td>";
-                                if ($value['paymentMethod'] == 'DP') {
-                                    $html .= "<div class='text-center'>";
-                                    $html .= "DP : $value[userPayed] <br>";
-                                    $html .= "</div>";
-                                } else {
-                                    $html .= "<span>Lunas</span>";
-                                }
-                                $html .= "</td>";
-                                $html .= "</tr>";
-                                $html .= "</tbody>";
-                                $html .= "</table>";
-                                $html .= "</div>";
-                                $html .= "</div>";
-                                $html .= "</div>";
-                                $html .= "</div>";
-
-
-
-                                echo $html;
+                                //     }
+                                // }
+                                // $html .= "</td>";
+                                // $html .= "<td>" . date('d-m-Y', strtotime($value['checkIn'])) . "</td>";
+                                // $html .= "<td>" . date('d-m-Y', strtotime($value['checkOut'])) . "</td>";
+                                // $html .= "<td>Rp. " . number_format($value['totalPrice'], 0, ',', '.') . "</td>";
+                        
+                                // $html .= "<td>$value[status]</td>";
+                                // $html .= "<td>";
+                                // if ($value['paymentMethod'] == 'DP') {
+                                //     $html .= "<div class='text-center'>";
+                                //     $html .= "DP : $value[userPayed] <br>";
+                                //     $html .= "</div>";
+                                // } else {
+                                //     $html .= "<span>Lunas</span>";
+                                // }
+                                // $html .= "</td>";
+                                // $html .= "</tr>";
+                                // $html .= "</tbody>";
+                                // $html .= "</table>";
+                                // $html .= "</div>";
+                                // $html .= "</div>";
+                                // $html .= "</div>";
+                                // $html .= "</div>";
                             }
 
+                            echo $html;
                         }
                         ?>
 
@@ -269,7 +225,20 @@
                     </div>
                 </div>
 
-
+                <div class='modal fade' id='viewBookingModal' tabindex='-1' aria-labelledby='viewBookingLabel'
+                    aria-hidden='true'>
+                    <div class='modal-dialog modal-dialog-centered'>
+                        <div class='modal-content'>
+                            <div class='modal-header'>
+                                <h5 class='modal-title' id='viewBookingLabel'></h5>
+                                <button type='button' class='btn-close' data-bs-dismiss='modal'
+                                    aria-label='Close'></button>
+                            </div>
+                            <div class='modal-body' id='viewPembayaranDetails'>
+                            </div>
+                        </div>
+                    </div>
+                </div>
 
             </div>
             <div </div>
@@ -315,6 +284,59 @@
                         cache: false,
                         contentType: false,
                         processData: false
+                    });
+                });
+                $(document).on('click', '.viewBookingBtn', function () {
+                    var bookingId = $(this).data('booking-id');
+                    console.log("booking id : " + bookingId);
+                    $.ajax({
+                        url: 'admin/ajax/fetchBookingDetails.php',
+                        type: 'POST',
+                        data: {
+                            booking_id: bookingId
+                        },
+                        success: function (response) {
+                            const data = JSON.parse(response);
+                            console.log(data);
+                            var html = "<table class='table table-striped'>";
+                            html += "<thead>";
+                            html += "<tr>";
+                            html += "<th scope='col'>Room</th>";
+                            html += "<th scope='col'>Check In</th>";
+                            html += "<th scope='col'>Check Out</th>";
+                            html += "<th scope='col'>Total Price</th>";
+                            html += "<th scope='col'>Status</th>";
+                            html += "<th scope='col'>Pembayaran</th>";
+                            html += "</tr>";
+                            html += "</thead>";
+                            html += "<tbody>";
+                            html += "<tr>";
+                            if (data.roomId != null) {
+                                html += "<td>" + data.room.name + "</td>";
+                            } else {
+                                html += "<td>" + data.bundling.name + "</td>";
+                            }
+                            html += "<td>" + data.checkIn + "</td>";
+                            html += "<td>" + data.checkOut + "</td>";
+                            html += "<td>Rp. " + data.totalPrice + "</td>";
+                            html += "<td>" + data.status + "</td>";
+                            html += "<td>";
+                            if (data.paymentMethod == 'DP') {
+                                html += "<div class='text-center'>";
+                                html += "DP : " + data.userPayed + "<br>";
+                                html += "</div>";
+                            } else {
+                                html += "<span>Lunas</span>";
+                            }
+                            html += "</td>";
+                            html += "</tr>";
+                            html += "</tbody>";
+                            html += "</table>";
+                            $('#viewBookingLabel').html("Pemesanan " + data.id);
+                            $('#viewPembayaranDetails').html(html);
+                            $('#viewBookingModal').modal('show');
+
+                        }
                     });
                 });
             </script>
