@@ -34,8 +34,8 @@
                             </div>
 
                             <!-- Modal body -->
-                            <div class="modal-body">
-                                <form action="" id="tambahBundlingCAMP">
+                            <form action="" id="tambahBundlingCAMP">
+                                <div class="modal-body">
                                     <div class="card">
                                         <div class="card-header">
                                             Paket Camp
@@ -82,21 +82,21 @@
                                                     <button class="btn btn-sm btn-primary col-sm-3 offset-md-3">
                                                         Save</button>
                                                     <button class="btn btn-sm btn-default col-sm-3" type="button"
-                                                        onclick="$('#manage-category').get(0).reset()"> Cancel</button>
+                                                        data-bs-dismiss="modal"> Cancel</button>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
-                                </form>
-                            </div>
+                                </div>
 
-                            <!-- Modal footer -->
-                            <div class="modal-footer">
-                                <button class="btn btn-sm btn-primary  " name="add_room" type="submit"> Save</button>
-                                <button class="btn btn-sm btn-default" type="button"
-                                    onclick="$('#manage-category').get(0).reset()">
-                                    Cancel</button>
-                            </div>
+                                <!-- Modal footer -->
+                                <div class="modal-footer">
+                                    <button class="btn btn-sm btn-primary  " name="add_room" type="submit">
+                                        Save</button>
+                                    <button class="btn btn-sm btn-default" type="button" data-bs-dismiss="modal">
+                                        Cancel</button>
+                                </div>
+                            </form>
 
                         </div>
                     </div>

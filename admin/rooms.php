@@ -34,8 +34,8 @@
                             </div>
 
                             <!-- Modal body -->
-                            <div class="modal-body">
-                                <form method="POST" id="tambahKamar" enctype="multipart/form-data">
+                            <form method="POST" id="tambahKamar" enctype="multipart/form-data">
+                                <div class="modal-body">
                                     <div class="card">
                                         <div class="card-header">
                                             Penginapan
@@ -77,17 +77,16 @@
                                             </div>
                                         </div>
                                     </div>
-                                </form>
-                            </div>
+                                </div>
 
-                            <!-- Modal footer -->
-                            <div class="modal-footer">
-                                <button class="btn btn-sm btn-primary  " name="add_room" type="submit"> Save</button>
-                                <button class="btn btn-sm btn-default" type="button"
-                                    onclick="$('#manage-category').get(0).reset()">
-                                    Cancel</button>
-                            </div>
-
+                                <!-- Modal footer -->
+                                <div class="modal-footer">
+                                    <button class="btn btn-sm btn-primary  " name="add_room" type="submit">
+                                        Save</button>
+                                    <button class="btn btn-sm btn-default" type="button"
+                                        data-bs-dismiss="modal">Cancel</button>
+                                </div>
+                            </form>
                         </div>
                     </div>
                 </div>
@@ -181,9 +180,7 @@
                                                                 name="add_room" data-bs-dismiss="modal" type="submit">
                                                                 Save</button>
                                                             <button class="btn btn-sm btn-default col-sm-3"
-                                                                type="button" data-bs-dismiss="modal"
-                                                                onclick="$('#manage-category').get(0).reset()">
-                                                                Cancel</button>
+                                                                type="button" data-bs-dismiss="modal">Cancel</button>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -331,7 +328,7 @@
                             type: "GET",
                             dataType: "json",
                             success: function (data) {
-                                console.log("LOAD KAMAR : \n" + JSON.stringify(data) + "\n");
+                                // console.log("LOAD KAMAR : \n" + JSON.stringify(data) + "\n");
                                 var html = "";
                                 var isReady = 0;
                                 for (var i = 0; i < data.length; i++) {
